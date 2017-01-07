@@ -8,7 +8,7 @@
 FROM java:8
 
 ENV SCALA_VERSION 2.11.8
-ENV SBT_VERSION 0.13.11
+ENV SBT_VERSION 0.13.13
 
 # Install Scala
 ## Piping curl directly in tar
@@ -23,7 +23,7 @@ RUN \
   dpkg -i sbt-$SBT_VERSION.deb && \
   rm sbt-$SBT_VERSION.deb && \
   apt-get update && \
-  apt-get install sbt && \
+  apt-get install sbt nmap && \
   sbt sbtVersion
 
 # Define working directory
