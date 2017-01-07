@@ -10,6 +10,11 @@ FROM netflixoss/java:8
 ENV SCALA_VERSION 2.11.8
 ENV SBT_VERSION 0.13.13
 
+# Update the packeage and insall NMAP CURL & WGET
+RUN \
+  apt-get update && \
+  apt-get install -y nmap curl wget
+
 # Install Scala
 ## Piping curl directly in tar
 RUN \
@@ -22,9 +27,7 @@ RUN \
   curl -L -o sbt-$SBT_VERSION.deb http://dl.bintray.com/sbt/debian/sbt-$SBT_VERSION.deb && \
   dpkg -i sbt-$SBT_VERSION.deb && \
   rm sbt-$SBT_VERSION.deb && \
-  apt-get update && \
-  apt-get install -y sbt nmap
-
+  apt-get install -y sbt
 
 # create an empty sbt project;
 # then fetch all sbt jars from Maven repo so that your sbt will be ready to be used when you launch the image
