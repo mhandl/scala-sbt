@@ -5,7 +5,7 @@
 #
 
 # Pull base image
-FROM java:8
+FROM netflixoss/java:8
 
 ENV SCALA_VERSION 2.11.8
 ENV SBT_VERSION 0.13.13
@@ -25,12 +25,12 @@ RUN \
   apt-get update && \
   apt-get install -y sbt nmap
 
+
+# create an empty sbt project;
+# then fetch all sbt jars from Maven repo so that your sbt will be ready to be used when you launch the image
 COPY init-sbt.sh /tmp/
 
-RUN \
-  cd /tmp &&
-  ./init-sbt.sh &&
-  rm -rf *
+RUN cd /tmp  && ./init-sbt.sh  && rm -rf *
 
 # Define working directory
 WORKDIR /root
