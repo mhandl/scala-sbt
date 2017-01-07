@@ -23,7 +23,7 @@ RUN \
   dpkg -i sbt-$SBT_VERSION.deb && \
   rm sbt-$SBT_VERSION.deb && \
   apt-get update && \
-  apt-get install sbt nmap && \
+  apt-get install -y sbt nmap && \
   sbt sbtVersion
 
 # Define working directory
