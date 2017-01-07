@@ -13,7 +13,7 @@ ENV SBT_VERSION 0.13.13
 # Update the packeage and insall NMAP CURL & WGET
 RUN \
   apt-get update && \
-  apt-get install -y nmap curl wget
+  apt-get install -y nmap curl wget git
 
 # Install Scala
 ## Piping curl directly in tar
@@ -31,9 +31,12 @@ RUN \
 
 # create an empty sbt project;
 # then fetch all sbt jars from Maven repo so that your sbt will be ready to be used when you launch the image
-COPY init-sbt.sh /tmp/
-
-RUN cd /tmp  && ./init-sbt.sh  && rm -rf *
+RUN cd /tmp  && \
+  git clone https://github.com/mhandl/bootzooka.git && \
+  cd /tmp/bootzooka && \
+  sbt backend/compile && \
+  cd /tmp && \
+  rm -rf *
 
 # Define working directory
 WORKDIR /root
