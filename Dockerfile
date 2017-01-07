@@ -23,11 +23,14 @@ RUN \
   dpkg -i sbt-$SBT_VERSION.deb && \
   rm sbt-$SBT_VERSION.deb && \
   apt-get update && \
-  apt-get install -y sbt nmap 
+  apt-get install -y sbt nmap
 
 COPY init-sbt.sh /tmp/
 
-RUN cd /tmp  && ./init-sbt.sh  && rm -rf *
+RUN \
+  cd /tmp &&
+  ./init-sbt.sh &&
+  rm -rf *
 
 # Define working directory
 WORKDIR /root
