@@ -1,19 +1,14 @@
 #
 # Scala and sbt Dockerfile
 #
-# https://github.com/hseeberger/scala-sbt
+# https://github.com/mhandl/scala-sbt
 #
 
 # Pull base image
-FROM netflixoss/java:8
+FROM mhandl/artin_base:latest
 
 ENV SCALA_VERSION 2.11.8
 ENV SBT_VERSION 0.13.13
-
-# Update the packeage and insall NMAP CURL & WGET
-RUN \
-  apt-get update && \
-  apt-get install -y nmap curl wget git
 
 # Install Scala
 ## Piping curl directly in tar
@@ -22,6 +17,7 @@ RUN \
   echo >> /root/.bashrc && \
   echo 'export PATH=~/scala-$SCALA_VERSION/bin:$PATH' >> /root/.bashrc
 
+
 # Install sbt
 RUN \
   curl -L -o sbt-$SBT_VERSION.deb http://dl.bintray.com/sbt/debian/sbt-$SBT_VERSION.deb && \
@@ -29,14 +25,9 @@ RUN \
   rm sbt-$SBT_VERSION.deb && \
   apt-get install -y sbt
 
+
 # create an empty sbt project;
 # then fetch all sbt jars from Maven repo so that your sbt will be ready to be used when you launch the image
-RUN cd /tmp  && \
-  git clone https://github.com/mhandl/bootzooka.git && \
-  cd /tmp/bootzooka && \
-  sbt backend/compile && \
-  cd /tmp && \
-  rm -rf *
+COPY init-sbt.sh /tmp/
 
-# Define working directory
-WORKDIR /root
+RUN cd /tmp  && ./init-sbt.sh  && rm -rf *
